@@ -1,20 +1,20 @@
-# Warehouse-Blog - Cloudflare Frontend + Local C Backend
+# Warehouse-Blog
 
-一个支持用户资料、项目展示、留言板与友链的自托管仓库博客系统，前端可部署到 Cloudflare，后端使用本地 C 服务与 SQLite。
+一个支持用户资料、项目展示、留言板与友链的自托管仓库博客系统，前端可静态部署，后端使用本地 C 服务与 SQLite。
 
-A self-hosted repository blog system with profiles, project showcases, a message board, and friendly links, using a Cloudflare-hosted frontend and a local C/SQLite backend.
+A self-hosted repository blog system with profiles, project showcases, a message board, and friendly links, using a static frontend and a local C/SQLite backend.
 
 This repository is a reusable self-hosted template for a split deployment:
 
-- `your-frontend-domain.example`: Cloudflare-hosted static frontend
-- `your-api-domain.example`: local `cloudflared` tunnel -> local C backend
+- static frontend: any static host or CDN
+- API backend: local C service exposed through your preferred proxy or tunnel
 - data storage: local SQLite + exported JSON mirror + local avatar files
 
 ## Security cleanup in this repository
 
 This version has been sanitized for public release:
 
-- removed project-specific Cloudflare Tunnel UUIDs and hostnames
+- removed project-specific tunnel UUIDs, hostnames, and local paths
 - removed personal admin account data and replaced it with template values
 - replaced public API domain examples with placeholders
 - replaced example admin credentials with generic starter values that you should change immediately
@@ -80,51 +80,47 @@ The frontend uses the following API base resolution order:
 
 Before production deployment, replace the placeholder with your real API origin.
 
-## Cloudflare frontend
+## Frontend Hosting
 
-Upload the contents of `web/` to your Cloudflare static hosting project for your own domain.
+Upload the contents of `web/` to your static hosting provider of choice.
 
-## Direct Nginx deployment for `thdeb.bbroot.com`
+## Direct Nginx Deployment
 
-This repository can also be served directly from the server without `cloudflared`.
+This repository can also be served directly from the server without a tunnel.
 
 Recommended topology:
 
-- Public Nginx site: `https://thdeb.bbroot.com`
+- Public site: your public domain
 - Local backend only: `http://127.0.0.1:8080`
-- Existing Cloudflare site: `https://thdeb.us.ci`
-- Existing Cloudflare API: `https://api.thdeb.us.ci`
 - Shared data: the same SQLite database and upload directory in this repository
-
-In this setup, `thdeb.bbroot.com` uses same-origin `/api/...` through Nginx, while `thdeb.us.ci` can keep using `api.thdeb.us.ci`. Both sites update together because they point at the same backend and the same `web/` files.
 
 Run the deployment helper on the server:
 
 ```bash
-bash ./deploy_nginx.sh --domain thdeb.bbroot.com
+bash ./deploy_nginx.sh --domain your-site.example
 ```
 
-After DNS for `thdeb.bbroot.com` points to the server, enable HTTPS:
+After DNS for your domain points to the server, enable HTTPS:
 
 ```bash
-sudo certbot --nginx -d thdeb.bbroot.com
+sudo certbot --nginx -d your-site.example
 ```
 
 Or let the helper run certbot:
 
 ```bash
-bash ./deploy_nginx.sh --domain thdeb.bbroot.com --certbot
+bash ./deploy_nginx.sh --domain your-site.example --certbot
 ```
 
 For later updates on the server:
 
 ```bash
-bash ./update_dual_sites.sh thdeb.bbroot.com
+bash ./update_dual_sites.sh your-site.example
 ```
 
 The local backend port is the internal address Nginx proxies to. The default is `127.0.0.1:8080`; visitors do not access this port directly.
 
-## Local API through Cloudflare Tunnel
+## Local API Through Tunnel
 
 1. Install `cloudflared`
 2. `cloudflared tunnel login`
@@ -146,7 +142,7 @@ cloudflared --config ~/.cloudflared/config.yml tunnel run your-blog-api
 - Update `WB_ALLOWED_ORIGINS` so it only contains your real frontend origins
 - Leave `WB_COOKIE_DOMAIN=''` unless you explicitly want to widen cookie scope
 
-## Email verification
+## Email Verification
 
 Registration now requires a 6-digit email verification code. Configure SMTP before enabling public registration:
 
@@ -158,10 +154,10 @@ WB_SMTP_FROM='no-reply@example.com'
 WB_SMTP_FROM_NAME='Warehouse-Blog'
 ```
 
-## Python helper logger
+## Python Helper Logger
 
 ```bash
-python3 ./tools/api_health_logger.py   --local http://ip/api/health   --public https://your-api-domain.example/api/health   --profile https://your-api-domain.example/api/site-profile?lang=en
+python3 ./tools/api_health_logger.py   --local http://127.0.0.1:8080/api/health   --public https://your-api-domain.example/api/health   --profile https://your-api-domain.example/api/site-profile?lang=en
 ```
 
 The logger writes to `./logs/api-health.log` by default.
