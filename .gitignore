@@ -1,0 +1,22 @@
+.DS_Store
+*.log
+
+# Local runtime data and private seeds.
+/data/
+logs/
+*.sqlite
+*.sqlite3
+*.db
+
+# Local environment and tunnel credentials.
+.env
+*.env
+backend/scripts/server.env
+backend/warehouse-blog-server
+.cloudflared/
+cert.pem
+*.pem
+*.key
+
+# Do not publish the browser-readable admin seed.
+web/data/admin-account.json

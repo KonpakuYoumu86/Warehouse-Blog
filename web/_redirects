@@ -1,0 +1,56 @@
+# Cloudflare Pages Routes Configuration
+# Redirect duplicate routes to canonical paths
+
+# Board routes - use /board/ paths
+/board.html                    /board/              301
+/board.zh-CN.html              /board.zh-CN/        301
+/board/index.html              /board/              301
+/board.zh-CN/index.html        /board.zh-CN/        301
+
+# Fix accidental relative navigations from directory routes
+/board/board.html              /board/              301
+/board/board.zh-CN.html        /board.zh-CN/        301
+/board/links.html              /links.html          301
+/board/links.zh-CN.html        /links.zh-CN.html    301
+/board/about.html              /about.html          301
+/board/about.zh-CN.html        /about.zh-CN.html    301
+/board/panel.html              /panel/              301
+/board/panel.zh-CN.html        /panel.zh-CN/        301
+/board.zh-CN/board.html        /board/              301
+/board.zh-CN/board.zh-CN.html  /board.zh-CN/        301
+/board.zh-CN/links.html        /links.html          301
+/board.zh-CN/links.zh-CN.html  /links.zh-CN.html    301
+/board.zh-CN/about.html        /about.html          301
+/board.zh-CN/about.zh-CN.html  /about.zh-CN.html    301
+/board.zh-CN/panel.html        /panel/              301
+/board.zh-CN/panel.zh-CN.html  /panel.zh-CN/        301
+
+# Panel routes - use /panel/ paths
+/panel.html                    /panel/              301
+/panel.zh-CN.html              /panel.zh-CN/        301
+/panel/index.html              /panel/              301
+/panel.zh-CN/index.html        /panel.zh-CN/        301
+/panel/panel.html              /panel/              301
+/panel/panel.zh-CN.html        /panel.zh-CN/        301
+/panel/links.html              /links.html          301
+/panel/links.zh-CN.html        /links.zh-CN.html    301
+/panel/about.html              /about.html          301
+/panel/about.zh-CN.html        /about.zh-CN.html    301
+/panel/board.html              /board/              301
+/panel/board.zh-CN.html        /board.zh-CN/        301
+/panel.zh-CN/panel.html        /panel/              301
+/panel.zh-CN/panel.zh-CN.html  /panel.zh-CN/        301
+/panel.zh-CN/links.html        /links.html          301
+/panel.zh-CN/links.zh-CN.html  /links.zh-CN.html    301
+/panel.zh-CN/about.html        /about.html          301
+/panel.zh-CN/about.zh-CN.html  /about.zh-CN.html    301
+/panel.zh-CN/board.html        /board/              301
+/panel.zh-CN/board.zh-CN.html  /board.zh-CN/        301
+
+# Home routes
+/index.html                    /                    301
+
+# Index directory routes - serve the .html files directly
+/index.zh-CN/                  /index.zh-CN.html    200
+
+# About pages - keep as is (only .html versions exist)

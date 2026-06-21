@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Warehouse-Blog — 关于</title>
+  <meta name="description" content="关于原作者 LinusTrevian 以及上游开源项目。">
+  <link rel="icon" href="./assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="./assets/img/background.png" as="image" fetchpriority="high">
+  <link rel="stylesheet" href="./assets/css/styles.css?v=20260620-nginx-dual">
+  <script src="./assets/js/config.js?v=20260620-nginx-dual" defer></script>
+  <script src="./assets/js/app.js?v=20260620-nginx-dual" defer></script>
+</head>
+<body data-current-lang="zh-CN" data-page="about" data-current-path="about.zh-CN.html">
+  <div class="modal-root" data-modal-root></div>
+  <div class="toast-stack" data-toast-stack aria-live="polite" aria-atomic="true"></div>
+
+  <header class="topbar">
+    <div class="topbar__left">
+      <div class="language-box" data-language-box>
+        <button class="language-box__button" type="button" aria-expanded="false" aria-controls="lang-menu" data-language-button>
+          <span>语言</span>
+          <span class="language-box__caret" aria-hidden="true">⌄</span>
+        </button>
+        <div class="language-box__menu" id="lang-menu" data-language-menu>
+          <button class="language-box__item " type="button" data-language-item data-target="about.html">English</button>
+          <button class="language-box__item is-active" type="button" data-language-item data-target="about.zh-CN.html">简体中文</button>
+        </div>
+      </div>
+      <button class="topbar__button topbar__button--light" type="button" data-login-toggle>登录</button>
+      <button class="topbar__button topbar__button--light" type="button" data-board-button>留言板</button>
+      <button class="topbar__button topbar__button--light" type="button" data-links-button>友链</button>
+      <button class="topbar__button topbar__button--light" type="button" data-about-button>关于</button>
+    </div>
+
+    <div class="topbar__right">
+      <button class="icon-button" type="button" data-search-open aria-label="Search user by UID">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 4a6.5 6.5 0 1 0 4.06 11.58l4.43 4.43 1.41-1.41-4.43-4.43A6.5 6.5 0 0 0 10.5 4Zm0 2a4.5 4.5 0 1 1 0 9a4.5 4.5 0 0 1 0-9Z" fill="currentColor"/></svg>
+      </button>
+      <button class="topbar__button topbar__button--green" type="button" data-panel-button>我的面板</button>
+      <button class="avatar-button" type="button" data-avatar-trigger aria-label="avatar button">
+        <img src="./assets/img/default-avatar.svg" alt="" data-topbar-avatar>
+      </button>
+      <input class="sr-only" type="file" accept="image/*" data-avatar-input>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="hero-banner hero-banner--article">
+      <img class="hero-banner__bg" src="./assets/img/background.png" alt="" width="2048" height="1154" fetchpriority="high">
+      <div class="hero-banner__veil" aria-hidden="true"></div>
+      <section class="article-section">
+      <div class="article">
+        <h1>关于</h1>
+        <div class="info">
+          <span class="date">上游项目与原作者</span>
+        </div>
+        <div class="content about-content">
+          <div class="about-copy">
+            <p>本站使用的部分代码来自原作者 <strong>LinusTrevian</strong> 的作品。</p>
+            <p>上游项目（开源）位于 GitHub：<a href="https://github.com/LinusTrevian/Board" target="_blank" rel="noopener noreferrer">https://github.com/LinusTrevian/Board</a></p>
+            <p>原作者社交链接（B站）：<a href="https://space.bilibili.com/3546843237582920" target="_blank" rel="noopener noreferrer">LinusTrevian 的 B 站空间</a></p>
+            <p>背景图出处：<a href="https://www.pixiv.net/artworks/61269686" target="_blank" rel="noopener noreferrer">https://www.pixiv.net/artworks/61269686</a></p>
+            <p>在此致谢原作者与开源贡献🥰</p>
+          </div>
+          <figure class="about-mascot">
+            <img src="./assets/img/favicon.svg" alt="Zux" width="220" height="220">
+            <figcaption>本站吉祥物——Zux</figcaption>
+          </figure>
+        </div>
+      </div>
+      <p class="about-uptime">此站已稳定运行 <span data-site-uptime-duration>...</span>。</p>
+      </section>
+    </section>
+  </main>
+</body>
+</html>

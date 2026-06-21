@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Warehouse-Blog — My Panel</title>
+  <meta name="description" content="Profile and project management panel for the repository blog system.">
+  <meta name="color-scheme" content="dark">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="../assets/img/background.png" as="image" fetchpriority="high">
+  <link rel="preload" href="../assets/img/default-avatar.svg" as="image">
+  <link rel="stylesheet" href="../assets/css/styles.css?v=20260620-nginx-dual">
+  <script src="../assets/js/config.js?v=20260620-nginx-dual" defer></script>
+  <script src="../assets/js/app.js?v=20260620-nginx-dual" defer></script>
+</head>
+<body data-current-lang="en" data-page="panel" data-current-path="/panel/">
+  <div class="modal-root" data-modal-root></div>
+  <div class="toast-stack" data-toast-stack aria-live="polite" aria-atomic="true"></div>
+
+  <header class="topbar">
+    <div class="topbar__left">
+      <div class="language-box" data-language-box>
+        <button class="language-box__button" type="button" aria-expanded="false" aria-controls="lang-menu" data-language-button>
+          <span>Language</span>
+          <span class="language-box__caret" aria-hidden="true">⌄</span>
+        </button>
+        <div class="language-box__menu" id="lang-menu" data-language-menu>
+          <button class="language-box__item is-active" type="button" data-language-item data-target="../panel.html">English</button>
+          <button class="language-box__item " type="button" data-language-item data-target="../panel.zh-CN.html">Simplified Chinese</button>
+        </div>
+      </div>
+      <button class="topbar__button topbar__button--light" type="button" data-login-toggle>Log In</button>
+      <button class="topbar__button topbar__button--light" type="button" data-board-button>Message Board</button>
+      <button class="topbar__button topbar__button--light" type="button" data-links-button>Friendly Link</button>
+      <button class="topbar__button topbar__button--light" type="button" data-about-button>About</button>
+    </div>
+
+    <div class="topbar__right">
+      <button class="icon-button" type="button" data-search-open aria-label="Search user by UID">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 4a6.5 6.5 0 1 0 4.06 11.58l4.43 4.43 1.41-1.41-4.43-4.43A6.5 6.5 0 0 0 10.5 4Zm0 2a4.5 4.5 0 1 1 0 9a4.5 4.5 0 0 1 0-9Z" fill="currentColor"/></svg>
+      </button>
+      <button class="topbar__button topbar__button--green" type="button" data-panel-button>My Panel</button>
+      <button class="avatar-button" type="button" data-avatar-trigger aria-label="avatar button">
+        <img src="../assets/img/default-avatar.svg" alt="" data-topbar-avatar>
+      </button>
+      <input class="sr-only" type="file" accept="image/*" data-avatar-input>
+    </div>
+  </header>
+
+  <main class="page page--panel">
+    <section class="hero-banner hero-banner--panel">
+      <img class="hero-banner__bg" src="../assets/img/background.png" alt="" width="2048" height="1154" fetchpriority="high">
+      <div class="hero-banner__veil" aria-hidden="true"></div>
+      <div class="hero-banner__content hero-banner__content--panel">
+        <section class="user-panel" data-user-panel aria-live="polite">
+          <div class="profile-panel__loading">Loading...</div>
+        </section>
+        <div class="panel-actions">
+          <button class="panel-actions__button panel-actions__button--primary" type="button" data-edit-profile>Editing Materials</button>
+          <button class="panel-actions__button panel-actions__button--danger" type="button" data-cancel-account>Cancel Account</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="admin-section" data-admin-section hidden>
+      <div class="section-card">
+        <h2 class="section-title">Admin Controls</h2>
+        <div class="admin-users" data-admin-users></div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

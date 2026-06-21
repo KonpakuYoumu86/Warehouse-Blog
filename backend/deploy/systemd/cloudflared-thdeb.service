@@ -1,0 +1,13 @@
+[Unit]
+Description=Cloudflare Tunnel for Warehouse-Blog API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/cloudflared tunnel --protocol quic --config /home/YOUR_USER/.cloudflared/config.yml run YOUR_TUNNEL_NAME
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

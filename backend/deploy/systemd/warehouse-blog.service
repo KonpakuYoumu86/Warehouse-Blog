@@ -1,0 +1,15 @@
+[Unit]
+Description=Warehouse-Blog backend
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/warehouse-blog
+EnvironmentFile=/opt/warehouse-blog/backend/scripts/server.env
+ExecStart=/opt/warehouse-blog/backend/warehouse-blog-server
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

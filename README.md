@@ -1,0 +1,167 @@
+# Warehouse-Blog - Cloudflare Frontend + Local C Backend
+
+一个支持用户资料、项目展示、留言板与友链的自托管仓库博客系统，前端可部署到 Cloudflare，后端使用本地 C 服务与 SQLite。
+
+A self-hosted repository blog system with profiles, project showcases, a message board, and friendly links, using a Cloudflare-hosted frontend and a local C/SQLite backend.
+
+This repository is a reusable self-hosted template for a split deployment:
+
+- `your-frontend-domain.example`: Cloudflare-hosted static frontend
+- `your-api-domain.example`: local `cloudflared` tunnel -> local C backend
+- data storage: local SQLite + exported JSON mirror + local avatar files
+
+## Security cleanup in this repository
+
+This version has been sanitized for public release:
+
+- removed project-specific Cloudflare Tunnel UUIDs and hostnames
+- removed personal admin account data and replaced it with template values
+- replaced public API domain examples with placeholders
+- replaced example admin credentials with generic starter values that you should change immediately
+
+## Upstream attribution
+
+This repository is derived from the original project by `LinusTrevian`.
+The upstream project and author are already credited in the site "About" pages and remain credited in this public release.
+
+## Layout
+
+- `web/` static frontend files
+- `backend/` C backend (`libmicrohttpd` + `sqlite3` + `jansson` + `curl` + `openssl`)
+- `data/warehouse-blog.sqlite3` local SQLite database
+- `data/export/site-state.json` JSON mirror export
+- `data/uploads/avatars/` local avatar files
+- `tools/api_health_logger.py` helper logger / health checker
+- `backend/deploy/cloudflared/config.api.example.yml` example tunnel config
+
+## Fedora 43 dependencies
+
+```bash
+sudo dnf install -y gcc make pkgconf-pkg-config unzip curl ca-certificates   libmicrohttpd-devel sqlite-devel jansson-devel libcurl-devel openssl-devel python3
+```
+
+## Debian 13 dependencies
+
+```bash
+sudo apt-get update
+sudo apt-get install -y build-essential pkg-config unzip curl ca-certificates   libmicrohttpd-dev libsqlite3-dev libjansson-dev libcurl4-openssl-dev libssl-dev python3
+```
+
+## Build
+
+```bash
+cd backend
+make
+cd ..
+```
+
+## Local backend run
+
+```bash
+cp ./backend/scripts/server.env.example ./backend/scripts/server.env
+set -a
+source ./backend/scripts/server.env
+set +a
+./backend/warehouse-blog-server
+```
+
+Open local test page:
+
+
+
+## Frontend API configuration
+
+The frontend uses the following API base resolution order:
+
+1. `window.WAREHOUSE_API_BASE`
+2. `data-api-base` on the root HTML element
+3. same-origin for `localhost` / `IP`
+4. fallback placeholder: `https://your-api-domain.example`
+
+Before production deployment, replace the placeholder with your real API origin.
+
+## Cloudflare frontend
+
+Upload the contents of `web/` to your Cloudflare static hosting project for your own domain.
+
+## Direct Nginx deployment for `thdeb.bbroot.com`
+
+This repository can also be served directly from the server without `cloudflared`.
+
+Recommended topology:
+
+- Public Nginx site: `https://thdeb.bbroot.com`
+- Local backend only: `http://127.0.0.1:8080`
+- Existing Cloudflare site: `https://thdeb.us.ci`
+- Existing Cloudflare API: `https://api.thdeb.us.ci`
+- Shared data: the same SQLite database and upload directory in this repository
+
+In this setup, `thdeb.bbroot.com` uses same-origin `/api/...` through Nginx, while `thdeb.us.ci` can keep using `api.thdeb.us.ci`. Both sites update together because they point at the same backend and the same `web/` files.
+
+Run the deployment helper on the server:
+
+```bash
+bash ./deploy_nginx.sh --domain thdeb.bbroot.com
+```
+
+After DNS for `thdeb.bbroot.com` points to the server, enable HTTPS:
+
+```bash
+sudo certbot --nginx -d thdeb.bbroot.com
+```
+
+Or let the helper run certbot:
+
+```bash
+bash ./deploy_nginx.sh --domain thdeb.bbroot.com --certbot
+```
+
+For later updates on the server:
+
+```bash
+bash ./update_dual_sites.sh thdeb.bbroot.com
+```
+
+The local backend port is the internal address Nginx proxies to. The default is `127.0.0.1:8080`; visitors do not access this port directly.
+
+## Local API through Cloudflare Tunnel
+
+1. Install `cloudflared`
+2. `cloudflared tunnel login`
+3. `cloudflared tunnel create your-blog-api`
+4. Bind `your-api-domain.example` to that tunnel
+5. Use the example config from `backend/deploy/cloudflared/config.api.example.yml`
+
+Example:
+
+```bash
+cloudflared tunnel route dns your-blog-api your-api-domain.example
+cloudflared --config ~/.cloudflared/config.yml tunnel run your-blog-api
+```
+
+## Cookie / CORS notes
+
+- For local HTTP testing keep `WB_COOKIE_SECURE=0`
+- For production HTTPS, change it to `WB_COOKIE_SECURE=1`
+- Update `WB_ALLOWED_ORIGINS` so it only contains your real frontend origins
+- Leave `WB_COOKIE_DOMAIN=''` unless you explicitly want to widen cookie scope
+
+## Email verification
+
+Registration now requires a 6-digit email verification code. Configure SMTP before enabling public registration:
+
+```bash
+WB_SMTP_URL='smtps://smtp.example.com:465'
+WB_SMTP_USERNAME='smtp-user'
+WB_SMTP_PASSWORD='smtp-password'
+WB_SMTP_FROM='no-reply@example.com'
+WB_SMTP_FROM_NAME='Warehouse-Blog'
+```
+
+## Python helper logger
+
+```bash
+python3 ./tools/api_health_logger.py   --local http://ip/api/health   --public https://your-api-domain.example/api/health   --profile https://your-api-domain.example/api/site-profile?lang=en
+```
+
+The logger writes to `./logs/api-health.log` by default.

@@ -1,0 +1,8 @@
+# Replace YOUR-TUNNEL-UUID and YOUR_USER after creating the tunnel.
+tunnel: YOUR-TUNNEL-UUID
+credentials-file: /home/YOUR_USER/.cloudflared/YOUR-TUNNEL-UUID.json
+
+ingress:
+  - hostname: api.thdeb.us.ci
+    service: http://127.0.0.1:8080
+  - service: http_status:404
